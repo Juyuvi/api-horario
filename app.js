@@ -23,7 +23,7 @@ app.get("/horario-atual", (request, response)=>{
     const data = new Date().toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"});
 
     const requestResponse = {
-        "hora": `${data.slice(12)}`
+        "hora": `${data.slice(-8)}`
     }
 
     response.send(requestResponse)
@@ -51,7 +51,7 @@ app.get("/horario-custom", (req, res) => {
     const data = new Date().toLocaleString("pt-BR", {timeZone: listaLocais[local]});
 
     res.send({
-        "hora": `${data.slice(12)}`
+        "hora": `${data.slice(-8)}`
     });
 });
 
