@@ -1,15 +1,27 @@
-const express = require('express');
+import express, { json } from 'express';
+import { rateLimit } from 'express-rate-limit'
 
 const app = express();
-app.use(express.json());
+
+app.disable('x-powered-by')
+app.use(json());
 
 const PORT = process.env.PORT || 3000;
 let local = "brasilia";
 const listaLocais = {"brasilia": "America/Sao_Paulo", "greenwich": "Etc/GMT", "tokyo": "Asia/Tokyo"};
+const limiter = rateLimit({ // Doc sample code...
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	// store: ... , // Redis, Memcached, etc. See below.
+});
 
 app.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
 });
+
+app.use(limiter);
 
 app.get("/status", (request, response) => {
     const status = {
