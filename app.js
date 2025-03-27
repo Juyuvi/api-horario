@@ -1,5 +1,6 @@
 import express, { json } from 'express';
 import { rateLimit } from 'express-rate-limit'
+import helmet from "helmet";
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
 });
 
-app.use(limiter);
+app.use(helmet(), limiter);
 
 app.get("/status", (request, response) => {
     const status = {
